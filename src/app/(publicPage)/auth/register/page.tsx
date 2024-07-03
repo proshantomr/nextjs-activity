@@ -1,5 +1,17 @@
 "use client"
 import React, { useState } from 'react';
+import Link from "next/link";
+import { redirect } from 'next/navigation';
+import {z} from 'zod';
+
+// const regSchema = z.object({
+//     name        :z.string(),
+//     email       :z.string().email().refine(async (email)=>{
+//                 const isUnique = await uniqueEmailCheck(email);
+//                 },{message:"Your email already exists. Please use unique Email"}),
+//     password    :z.string().min(6),
+//     confirm_password: z.string().min(6)
+//     })
 
 const Register = () => {
     const [registerData, setRegisterData] = useState({
@@ -8,8 +20,11 @@ const Register = () => {
         password: "",
         confirm_password: ""
     });
+    // console.log(registerData);
 
     const [passwordError, setPasswordError] = useState("");
+    const [regComplete, setRegComplete] = useState(false)
+    // console.log("regComplete",regComplete);
 
     const registerHandler = (e) => {
         e.preventDefault();
@@ -19,8 +34,15 @@ const Register = () => {
             return;
         }
         setPasswordError("");
-        console.log(registerData);
+        setRegComplete(true);
+        // console.log(registerData);
+
     };
+    if (regComplete) {
+        redirect('/auth/login');
+    }
+
+    // console.log(regComplete);
 
     return (
         <div className="flex flex-col justify-center items-center h-screen">
@@ -62,7 +84,8 @@ const Register = () => {
                     {passwordError && <p className="text-red-500">{passwordError}</p>}
                 </div>
                 <button type="submit" className="btn btn-outline btn-info w-80">Register</button>
-                <p className="my-5">If you have an account, please <a href="#" className= "text-blue-500 cursor-pointer">Login</a></p>
+                {/*<p className="my-5">If you have an account, please <a href="#" className= "text-blue-500 cursor-pointer">Login</a></p>*/}
+                <p className="mt-8">If you have an account, please <Link className="text-blue-500" href="/auth/login">Login</Link></p>
             </form>
         </div>
     );
