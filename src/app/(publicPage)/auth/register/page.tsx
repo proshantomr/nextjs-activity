@@ -1,9 +1,11 @@
 "use client"
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import Link from "next/link";
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation'
 import { z, ZodFormattedError } from 'zod';
 import {Axiosinstance} from "@/app/lib/axios/AxiosInterceptor";
+import {setAccessToken} from "@/action/regauthAction";
+import {AUTH_KEY} from "@/constant/constant";
 
 // check if an email is unique
 const uniqueEmailCheck = async (email: string): Promise<boolean> => {
@@ -38,6 +40,8 @@ type RegisterData = {
 };
 
 const Register: React.FC = () => {
+    const router = useRouter()
+
     const [registerData, setRegisterData] = useState<RegisterData>({
         name: "",
         email: "",
@@ -65,18 +69,21 @@ const Register: React.FC = () => {
 
 
             setValidationErrors({});
-            setRegComplete(true);
 
             const response = await Axiosinstance.post("http://localhost:3000/api/register", result)
-            console.log(response)
+            // console.log(response);
+            const {data}=response.data;
+            // console.log(data);
+            if(data){
+                setRegComplete(true);
+                router.push('/auth/login')
+            }
+
         } catch (error) {
             // console.error("Validation failed:", error);
         }
     };
 
-    if (regComplete) {
-        redirect('/auth/login');
-    }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setRegisterData({
@@ -88,7 +95,7 @@ const Register: React.FC = () => {
     return (
         <div className="flex flex-col justify-center items-center h-screen">
             <form onSubmit={registerHandler} className="text-center">
-                <h1 className="mb-4 font-bold text-2xl">Register Form</h1>
+                <h1 className="mb-4 font-bold text-2xl">Register</h1>
                 <div className="w-full max-w-xs">
                     <input
                         type="text"

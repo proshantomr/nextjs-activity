@@ -1,8 +1,24 @@
-import React from 'react';
+"use client"
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Logo from '@/app/assets/image/img.png';
 import Link from "next/link";
+
 const Navbar = () => {
+    const [user, setUser] = useState<{ name: string } | null>(null);
+
+    useEffect(() => {
+        const userData = localStorage.getItem('user');
+        if (userData) {
+            setUser(JSON.parse(userData));
+        }
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem('user');
+        setUser(null);
+    };
+
     return (
         <div className="navbar bg-base-100 shadow-lg">
             <div className="navbar-start">
@@ -44,7 +60,14 @@ const Navbar = () => {
             </div>
 
             <div className="navbar-end mr-12">
-                <Link className="btn"  href="/auth/register">Login</Link>
+                {user ? (
+                    <>
+                        <span className="mr-4 border border-green-500 rounded-full p-2 font-bold h-12 w-12">{user.name.charAt(0).toUpperCase()}</span>
+                        <button className="btn hover:accent-red-600" onClick={handleLogout}>Logout</button>
+                    </>
+                ) : (
+                    <Link className="btn" href="/auth/login">Login</Link>
+                )}
             </div>
         </div>
     );
