@@ -1,0 +1,41 @@
+// import {NextURL} from "next/dist/server/web/next-url";
+// import {getAccessToken} from "@/action/regauthAction";
+// import {AUTH_KEY} from "@/constant/constant";
+// import {NextRequest, NextResponse} from "next/server";
+// import {next} from "sucrase/dist/types/parser/tokenizer";
+// import {router} from "next/client";
+//
+//
+// const Authroutes =[
+//     '/login',
+//     '/register'
+// ];
+//
+// const privatepage = [
+//     'userDashboard',
+// ];
+// export async function middleware(request: NextRequest) {
+//     const {pathname} = request.nextUrl;
+//     const accessToken = getAccessToken(AUTH_KEY)
+//
+//     if (!accessToken) {
+//         if (Authroutes.includes(pathname)) {
+//             return NextResponse.next()
+//         } else {
+//             return NextResponse.redirect(new URL('/login', request.url));
+//         }
+//     }
+//     if (await accessToken && (privatepage.includes(pathname) || privatepage.some((route) => pathname.startsWith(route)))) {
+//         return NextResponse.next();
+//     }
+//     return NextResponse.redirect(new URL('/', request.url))
+// }
+//
+// const config ={
+//     matcher:[
+//         '/login',
+//         '/register',
+//         '/dashboard',
+//     ]
+//
+// }
