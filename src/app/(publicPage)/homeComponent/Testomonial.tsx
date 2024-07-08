@@ -9,7 +9,7 @@ const Testomonial = () => {
 
 
         <div className=" mx-auto px-5 my-24">
-            <h2 className="text-3xl">Testimonials</h2>
+            <h2 className="text-3xl ml-8">Testimonials</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="flex my-5 shadow-xl p-4">
                     <Image className="w-40 h-40" src={testimonial} alt="logo"/>
